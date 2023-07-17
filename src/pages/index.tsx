@@ -1,13 +1,27 @@
 import { useSession } from "next-auth/react";
-import { prisma } from "~/server/db";
 import { api } from "~/utils/api";
+import { useRouter } from "next/router";
+import { FormEvent, useState } from "react";
+import Swal from "sweetalert2";
 
 export default function Home() {
-  const hello = api.example.hello.useQuery({ text: "from tRPC" });
-  const session = useSession()
-  function handleSubmit(){
-    prisma
+  const { status } = useSession();
+  const [content, setContent] = useState("");
+
+  const newPost = api.post.create.useMutation({
+    onSuccess: () => {
+      setContent("");
+      Swal.fire("ok");
+    },
+  });
+
+  function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+    newPost.mutate({ content });
   }
+
+  if (status == "unauthenticated") useRouter().push("/signup");
+
   return (
     <>
       <div className="container m-auto min-h-screen gap-2 p-4 sm:grid sm:grid-cols-12">
@@ -18,8 +32,12 @@ export default function Home() {
               name="content"
               className="flex-grow resize-none overflow-hidden rounded-lg p-4 text-base"
               placeholder="Hello World! :D"
+              onChange={(e) => setContent(e.target.value)}
             />
-            <button className="place-self-end rounded-xl bg-pink-500 px-5 py-2 text-white">
+            <button
+              type="submit"
+              className="place-self-end rounded-xl bg-pink-500 px-5 py-2 text-white"
+            >
               Post
             </button>
           </form>

@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
+import { env } from "process";
 
 export default function LoginForm() {
-  const [userCred, setUserCred] = useState({ email: "", password: "" });
+  const [userCredentials, setUserCredentials] = useState({
+    email: "",
+    password: "",
+  });
   return (
     <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -29,10 +33,13 @@ export default function LoginForm() {
                 autoComplete="email"
                 required
                 onChange={(e) =>
-                  setUserCred({ ...userCred, email: e.target.value })
+                  setUserCredentials({
+                    ...userCredentials,
+                    email: e.target.value,
+                  })
                 }
-                value={userCred.email}
-                className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                value={userCredentials.email}
+                className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
             </div>
           </div>
@@ -62,10 +69,13 @@ export default function LoginForm() {
                 autoComplete="current-password"
                 required
                 onChange={(e) =>
-                  setUserCred({ ...userCred, password: e.target.value })
+                  setUserCredentials({
+                    ...userCredentials,
+                    password: e.target.value,
+                  })
                 }
-                value={userCred.password}
-                className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                value={userCredentials.password}
+                className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
             </div>
           </div>
@@ -74,8 +84,8 @@ export default function LoginForm() {
             <button
               onClick={() =>
                 signIn("credentials", {
-                  email: userCred.email,
-                  password: userCred.password,
+                  email: userCredentials.email,
+                  password: userCredentials.password,
                 })
               }
               className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
@@ -84,11 +94,11 @@ export default function LoginForm() {
             </button>
           </div>
         </form>
-        <div className="grid grid-cols-2 mt-10 w-full">
+        <div className="mt-10 grid w-full grid-cols-2">
           <div className="flex justify-between pr-10">
             <button
               onClick={() =>
-                signIn("github", { callbackUrl: "http://localhost:3000/home/" })
+                signIn("github", { callbackUrl: env.NEXTAUTH_URL })
               }
             >
               <svg
@@ -103,7 +113,7 @@ export default function LoginForm() {
             </button>
             <button
               onClick={() =>
-                signIn("github", { callbackUrl: "http://localhost:3000/home/" })
+                signIn("github", { callbackUrl: "http://localhost:3000/" })
               }
             >
               <svg
@@ -118,7 +128,7 @@ export default function LoginForm() {
             </button>
             <button
               onClick={() =>
-                signIn("github", { callbackUrl: "http://localhost:3000/home/" })
+                signIn("github", { callbackUrl: "http://localhost:3000/" })
               }
             >
               <svg
@@ -133,7 +143,7 @@ export default function LoginForm() {
             </button>
           </div>
           <div className="flex leading-10">
-            <p className="text-sm text-slate-100 pr-2">Not a member?</p>
+            <p className="pr-2 text-sm text-slate-100">Not a member?</p>
             <Link href={"/"} className="text-sm italic">
               Register
             </Link>

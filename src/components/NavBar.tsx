@@ -19,9 +19,8 @@ export default function Navbar() {
   const pathname = usePathname();
   const session = useSession();
   console.log(session);
-  if (pathname == "/signup") {
-    return <></>;
-  }
+
+  if (pathname == "/signup") return null;
   return (
     <div>
       <Disclosure as="nav" className="mb-2 backdrop-blur-sm">
