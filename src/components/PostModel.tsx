@@ -1,7 +1,10 @@
 import Link from "next/link";
 import React from "react";
 import { ProfileImage } from "./ProfileImage";
-import { LifebuoyIcon } from "@heroicons/react/24/outline";
+import { LifebuoyIcon as LifebuoyIconOut } from "@heroicons/react/24/outline";
+import { LifebuoyIcon as LifebuoyIconSolid } from "@heroicons/react/24/solid";
+import { api } from "~/utils/api";
+import Swal from "sweetalert2";
 
 export default function PostModel({
   id,
@@ -11,8 +14,20 @@ export default function PostModel({
   likeCount,
   likedByUser,
 }: Posts) {
+
+  const toggleLike = api.post.toggleLike.useMutation({
+    onSuccess: async () => {
+    await ctx.post.getAll.invalidate()
+    },
+  });
+
+  const ctx = api.useContext()
+
+  function handleToggleLike(id: string) {
+    toggleLike.mutate({ id });
+  }
   return (
-    <li className="flex gap-4 rounded-lg bg-[rgba(100,116,139,0.5)] px-4 pb-2 pt-4">
+    <li className="flex gap-4 rounded-lg bg-[rgba(100,116,139,0.5)] px-4 pb-2 pt-4 backdrop-blur-3xl">
       <Link href={`/profile/${user.id}`} className="h-fit">
         <ProfileImage src={user.image} />
       </Link>
@@ -24,8 +39,16 @@ export default function PostModel({
         </div>
         <p className="flex-grow whitespace-pre-wrap">{content}</p>
         <div className="flex justify-between text-center">
-          <button className="flex items-center space-x-1 rounded-lg hover:text-slate-300 text-indigo-400">
-            <LifebuoyIcon className="h-5 w-5 " />
+          <button
+            onClick={() => handleToggleLike(id)}
+            disabled={toggleLike.isLoading}
+            className="flex items-center space-x-1 rounded-lg text-indigo-400 hover:text-slate-300"
+          >
+            {likedByUser ? (
+              <LifebuoyIconSolid className="h-5 w-5" />
+            ) : (
+              <LifebuoyIconOut className="h-5 w-5 " />
+            )}
             <p>{likeCount}</p>
           </button>
           <span className="text-fray-500 self-end text-xs">

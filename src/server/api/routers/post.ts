@@ -5,7 +5,6 @@ import {
   publicProcedure,
   protectedProcedure,
 } from "~/server/api/trpc";
-import { prisma } from "~/server/db";
 
 export const postRouter = createTRPCRouter({
   getAll: protectedProcedure
@@ -15,6 +14,8 @@ export const postRouter = createTRPCRouter({
       })
     )
     .query(async ({ input: { cursor = 0 }, ctx }) => {
+      console.log(cursor);
+
       const currentUserID = await ctx.session?.user.id;
       const posts = await ctx.prisma.post.findMany({
         take: 11,
@@ -45,7 +46,6 @@ export const postRouter = createTRPCRouter({
       });
 
       let nextCursor: typeof cursor | undefined;
-
       if (posts.length > 10) {
         const nextPost = posts.pop();
         if (nextPost != null) {
@@ -82,5 +82,26 @@ export const postRouter = createTRPCRouter({
           userId: ctx.session.user.id,
         },
       });
+    }),
+  toggleLike: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .mutation(async ({ input: { id }, ctx }) => {
+      const data = { postId: id, userId: ctx.session.user.id };
+      const like = await ctx.prisma.like.findUnique({
+        where: {
+          userId_postId: data,
+        },
+      });
+      if (like == null) {
+        await ctx.prisma.like.create({ data });
+        return { liked: true };
+      } else {
+        await ctx.prisma.like.delete({ where: { userId_postId: data } });
+        return { liked: false };
+      }
     }),
 });
