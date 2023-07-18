@@ -3,6 +3,7 @@ import { api } from "~/utils/api";
 import { useRouter } from "next/router";
 import { FormEvent, useState } from "react";
 import Swal from "sweetalert2";
+import PostsList from "~/components/PostsList";
 
 export default function Home() {
   const { status } = useSession();
@@ -30,7 +31,7 @@ export default function Home() {
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <textarea
               name="content"
-              className="flex-grow resize-none overflow-hidden rounded-lg p-4 text-base"
+              className="flex-grow resize-none overflow-hidden rounded-lg p-4 text-base text-black"
               placeholder="Hello World! :D"
               onChange={(e) => setContent(e.target.value)}
             />
@@ -41,8 +42,31 @@ export default function Home() {
               Post
             </button>
           </form>
+          <RecentPosts />
         </div>
       </div>
     </>
+  );
+}
+
+function RecentPosts() {
+  const { data, isError, isLoading, hasNextPage, fetchNextPage } =
+    api.post.getAll.useInfiniteQuery(
+      {},
+      {
+        getNextPageParam: (lastPage) => {
+          lastPage.nextCursor;
+        },
+      }
+    );
+
+  return (
+    <PostsList
+      posts={data?.pages.flatMap((page) => page.posts)}
+      isError={isError}
+      isLoading={isLoading}
+      hasMore={hasNextPage!}
+      fetchNewPosts={fetchNextPage}
+    />
   );
 }
