@@ -11,20 +11,14 @@ export const postRouter = createTRPCRouter({
   getAll: protectedProcedure
     .input(
       z.object({
-        limit: z.number().optional(),
-        cursor: z
-          .object({
-            id: z.string(),
-            createdAt: z.date(),
-          })
-          .optional(),
+        cursor: z.number().optional(),
       })
     )
-    .query(async ({ input: { limit = 10, cursor }, ctx }) => {
+    .query(async ({ input: { cursor = 0 }, ctx }) => {
       const currentUserID = await ctx.session?.user.id;
       const posts = await ctx.prisma.post.findMany({
-        take: limit + 1,
-        cursor: cursor ? { createdAt_id: cursor } : undefined,
+        take: 11,
+        skip: 10 * cursor,
         orderBy: { createdAt: "desc" },
         select: {
           id: true,
@@ -52,10 +46,10 @@ export const postRouter = createTRPCRouter({
 
       let nextCursor: typeof cursor | undefined;
 
-      if (posts.length > limit) {
+      if (posts.length > 10) {
         const nextPost = posts.pop();
         if (nextPost != null) {
-          nextCursor = { id: nextPost.id, createdAt: nextPost.createdAt };
+          nextCursor = cursor + 1;
         }
       }
       return {

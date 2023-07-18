@@ -1,26 +1,7 @@
 import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 
-type Posts = {
-  id: string;
-  content: string;
-  createdAt: Date;
-  likeCount: number;
-  likedByUser: boolean;
-  user: {
-    id: string;
-    image: string | null;
-    name: string | null;
-  };
-};
 
-type PostsListProps = {
-  isLoading: boolean;
-  isError: boolean;
-  hasMore: boolean;
-  fetchNewPosts: () => Promise<unknown>;
-  posts?: Posts[];
-};
 
 export default function PostsList({
   posts,
