@@ -1,7 +1,6 @@
 import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-
-
+import PostModel from "./PostModel";
 
 export default function PostsList({
   posts,
@@ -20,9 +19,10 @@ export default function PostsList({
         next={fetchNewPosts}
         hasMore={hasMore}
         loader={"Loading..."}
+        className="space-y-2"
       >
         {posts.map((post) => (
-          <div key={post.id}>{post.content}</div>
+          <PostModel key={post.id} {...post} />
         ))}
       </InfiniteScroll>
     </ul>

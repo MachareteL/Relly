@@ -31,13 +31,14 @@ export default function Home() {
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <textarea
               name="content"
-              className="flex-grow resize-none overflow-hidden rounded-lg p-4 text-base text-black"
+              className="flex-grow resize-none overflow-hidden rounded-lg bg-gray-500 p-4 text-base outline-0 ring-1 placeholder:text-slate-200 focus:ring-white"
               placeholder="Hello World! :D"
               onChange={(e) => setContent(e.target.value)}
+              value={content}
             />
             <button
               type="submit"
-              className="place-self-end rounded-xl bg-pink-500 px-5 py-2 text-white"
+              className="place-self-end rounded-lg bg-indigo-500 px-4 py-2 text-white"
             >
               Post
             </button>
