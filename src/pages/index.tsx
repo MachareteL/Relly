@@ -6,7 +6,9 @@ import PostsList from "~/components/PostsList";
 import { LifebuoyIcon } from "@heroicons/react/24/outline";
 
 export default function Home() {
-  const { status, data } = useSession();
+  const { status, data } = useSession({
+    required: true,
+  });
   const [content, setContent] = useState("");
   const ctx = api.useContext();
 
@@ -16,15 +18,12 @@ export default function Home() {
       ctx.post.invalidate();
     },
   });
-  const user = api.user.getUser.useQuery({ id: data?.user.id! });
+  const user = api.user.getRelliesAmmount.useQuery({ id: data?.user.id! });
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
     newPost.mutate({ content });
   }
-
-  if (status == "unauthenticated") useRouter().push("/signup");
-
   return (
     <>
       <div className="absolute -bottom-20 -left-10 -z-10 w-2/6 opacity-70 blur-md">
@@ -118,12 +117,12 @@ export default function Home() {
           </div>
           <RecentPosts />
         </div>
-        <div className="col-span-3">
+        <div className="-z-20 col-span-3">
           <div className="h-52 rounded-lg border border-white border-opacity-30 bg-[rgba(255,255,255,0.2)] p-4 backdrop-blur-xl">
             <h1 className="text-3xl font-bold">Balance</h1>
             <h1 className="flex items-center text-lg font-medium">
               <LifebuoyIcon className="h-6" />
-              {user.data?.points} Rellies
+              {""} Rellies
             </h1>
           </div>
         </div>

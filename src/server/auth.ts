@@ -45,6 +45,45 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   },
+  session: {
+    strategy: "database",
+    maxAge: 60 * 60, //60 * 10,
+    updateAge: 60 * 5, //60 * 5,
+  },
+  pages: {
+    signIn: "/signup",
+  },
+  events: {
+    async session({ session }) {
+      const lastUserSession = await prisma.session.findFirst({
+        where: { userId: session.user.id },
+        orderBy: { expires: "desc" },
+      });
+      if (lastUserSession) {
+        // console.log("LASTE USER SESSION: ", lastUserSession.expires);
+        // console.log("SESSION EXPIRES:    ", session.expires);
+
+        // console.log("\n\n", lastUserSession.expires.valueOf() - new Date(session.expires).valueOf(),"\n\n")
+        // console.log(lastUserSession?.expires > new Date(session.expires)? "\nMAIOR\n" : "\nMENOR\n");
+
+        if (lastUserSession?.expires > new Date(session.expires)) {
+          await prisma.user.update({
+            where: {
+              id: session.user.id,
+            },
+            data: {
+              relliesAmmount: { increment: Math.floor(Math.random() * 10) },
+            },
+          });
+        }
+      }
+      // console.log("TOKEN" + JSON.stringify(session));
+
+      // console.log(
+      //   "ITIJIPAJKJHBLIKEBGLIEGLUIGHELGNELKBGLKJBjklITIJIPAJKJHBLIKEBGLIEGLUIGHELGNELKBGLKJBjklITIJIPAJKJHBLIKEBGLIEGLUIGHELGNELKBGLKJBjklITIJIPAJKJHBLIKEBGLIEGLUIGHELGNELKBGLKJBjklITIJIPAJKJHBLIKEBGLIEGLUIGHELGNELKBGLKJBjklITIJIPAJKJHBLIKEBGLIEGLUIGHELGNELKBGLKJBjklITIJIPAJKJHBLIKEBGLIEGLUIGHELGNELKBGLKJBjklITIJIPAJKJHBLIKEBGLIEGLUIGHELGNELKBGLKJBjklITIJIPAJKJHBLIKEBGLIEGLUIGHELGNELKBGLKJBjklITIJIPAJKJHBLIKEBGLIEGLUIGHELGNELKBGLKJBjklITIJIPAJKJHBLIKEBGLIEGLUIGHELGNELKBGLKJBjklITIJIPAJKJHBLIKEBGLIEGLUIGHELGNELKBGLKJBjklITIJIPAJKJHBLIKEBGLIEGLUIGHELGNELKBGLKJBjklITIJIPAJKJHBLIKEBGLIEGLUIGHELGNELKBGLKJBjklITIJIPAJKJHBLIKEBGLIEGLUIGHELGNELKBGLKJBjklITIJIPAJKJHBLIKEBGLIEGLUIGHELGNELKBGLKJBjkl"
+      // );
+    },
+  },
   adapter: PrismaAdapter(prisma),
   providers: [
     GitHubProvider({

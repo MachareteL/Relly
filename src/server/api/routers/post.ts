@@ -27,10 +27,10 @@ export const postRouter = createTRPCRouter({
           createdAt: true,
           _count: {
             select: {
-              likes: true,
+              rellies: true,
             },
           },
-          likes: {
+          rellies: {
             where: {
               userId: currentUserID,
             },
@@ -58,9 +58,9 @@ export const postRouter = createTRPCRouter({
             id: post.id,
             content: post.content,
             createdAt: post.createdAt,
-            likeCount: post._count.likes,
+            likeCount: post._count.rellies,
             user: post.user,
-            likedByUser: post.likes?.length > 0,
+            likedByUser: post.rellies?.length > 0,
           };
         }),
         nextCursor,
@@ -87,17 +87,18 @@ export const postRouter = createTRPCRouter({
     .input(
       z.object({
         id: z.string(),
+        ammount: z.number()
       })
     )
-    .mutation(async ({ input: { id }, ctx }) => {
-      const data = { postId: id, userId: ctx.session.user.id };
-      const like = await ctx.prisma.like.findUnique({
+    .mutation(async ({ input: { id, ammount = 1 }, ctx }) => {
+      const data = { postId: id, userId: ctx.session.user.id, ammount };
+      const like = await ctx.prisma.rellies.findUnique({
         where: {
           userId_postId: data,
         },
       });
       // if (like == null) {
-        await ctx.prisma.like.create({ data });
+        await ctx.prisma.rellies.create({ data });
         return { liked: true };
       // } else {
       //   await ctx.prisma.like.delete({ where: { userId_postId: data } });

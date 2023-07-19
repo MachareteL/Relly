@@ -3,18 +3,20 @@ import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
 export const userRouter = createTRPCRouter({
-  getUser: protectedProcedure
+  getRelliesAmmount: protectedProcedure
     .input(
       z.object({
         id: z.string(),
       })
     )
     .query(async ({ input: { id }, ctx }) => {
-      const user = await ctx.prisma.user.findUnique({
+      const user = await ctx.prisma.rellies.findMany({
         where: {
-          id,
+          userId: ctx.session.user.id,
         },
       });
+      console.log(user);
+      
       if (!user) {
         new TRPCError({
           code: "NOT_FOUND",

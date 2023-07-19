@@ -17,23 +17,23 @@ datasource db {
 model Post {
     id        String   @id @default(uuid())
     userId    String
-    content   String 
+    content   String
     createdAt DateTime @default(now())
 
-    user  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-    likes Like[]
+    user    User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+    rellies Rellies[]
 
     @@unique([createdAt, id])
     @@index([userId])
-    
 }
 
-model Like {
-    userId String
-    postId String
+model Rellies {
+    userId  String
+    postId  String
+    ammount Int?   @default(1)
 
-    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-    post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+    user User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+    post Post? @relation(fields: [postId], references: [id], onDelete: Cascade)
 
     @@id([userId, postId])
     @@index([userId])
@@ -79,8 +79,8 @@ model User {
     posts      Post[]
     followedBy Follows[] @relation("following")
     following  Follows[] @relation("follower")
-    points     Int       @default(0)
-    like       Like[]
+    rellies    Rellies[]
+    relliesAmmount Int @default(0)
 }
 
 model Follows {
