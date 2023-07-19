@@ -1,12 +1,12 @@
 import { useSession } from "next-auth/react";
 import { api } from "~/utils/api";
-import { useRouter } from "next/router";
 import { FormEvent, useState } from "react";
 import PostsList from "~/components/PostsList";
 import { LifebuoyIcon } from "@heroicons/react/24/outline";
-
+import Image from "next/image";
+import avif from "public/docs-dark@30.1a9f8cbf.avif";
 export default function Home() {
-  const { status, data } = useSession({
+  const { status } = useSession({
     required: true,
   });
   const [content, setContent] = useState("");
@@ -18,7 +18,7 @@ export default function Home() {
       ctx.post.invalidate();
     },
   });
-  const user = api.user.getRelliesAmmount.useQuery();
+  const user = api.user.getUser.useQuery();
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -60,8 +60,9 @@ export default function Home() {
           ></path>{" "}
         </svg>
       </div>
-      <div className="absolute -right-96 -top-96 -z-20 w-3/4 rotate-180 overflow-hidden blur-md">
-        <svg
+      <div className="absolute -top-20 right-0 -z-20 w-3/4 grayscale">
+        <Image src={avif} alt="backgroundElement" />
+        {/* <svg
           id="sw-js-blob-svg"
           viewBox="0 0 100 100"
           xmlns="http://www.w3.org/2000/svg"
@@ -93,11 +94,11 @@ export default function Home() {
             // style="transition: all 0.3s ease 0s;"
             stroke="url(#sw-gradient)"
           ></path>{" "}
-        </svg>
+        </svg> */}
       </div>
       <div className="container m-auto min-h-screen gap-2 p-4 sm:grid sm:grid-cols-12">
-        <div className="col-span-2 bg-slate-500"></div>
-        <div className="col-span-7">
+        <div className="col-span-2 hidden bg-slate-500 sm:block"></div>
+        <div className="sm:col-span-7">
           <div className="">
             <form onSubmit={handleSubmit} className="flex flex-col gap-4 pb-2">
               <textarea
@@ -117,7 +118,7 @@ export default function Home() {
           </div>
           <RecentPosts />
         </div>
-        <div className="-z-20 col-span-3">
+        <div className="-z-20 hidden sm:col-span-3 sm:block">
           <div className="h-52 rounded-lg border border-white border-opacity-30 bg-[rgba(255,255,255,0.2)] p-4 backdrop-blur-xl">
             <h1 className="text-3xl font-bold">Balance</h1>
             <h1 className="flex items-center text-lg font-medium">

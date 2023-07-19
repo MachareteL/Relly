@@ -60,8 +60,8 @@ export const authOptions: NextAuthOptions = {
         orderBy: { expires: "desc" },
       });
       if (lastUserSession) {
-        // console.log("LASTE USER SESSION: ", lastUserSession.expires);
-        // console.log("SESSION EXPIRES:    ", session.expires);
+        console.log("LASTE USER SESSION: ", lastUserSession.expires);
+        console.log("SESSION EXPIRES:    ", session.expires);
 
         // console.log("\n\n", lastUserSession.expires.valueOf() - new Date(session.expires).valueOf(),"\n\n")
         // console.log(lastUserSession?.expires > new Date(session.expires)? "\nMAIOR\n" : "\nMENOR\n");
@@ -77,11 +77,6 @@ export const authOptions: NextAuthOptions = {
           });
         }
       }
-      // console.log("TOKEN" + JSON.stringify(session));
-
-      // console.log(
-      //   "ITIJIPAJKJHBLIKEBGLIEGLUIGHELGNELKBGLKJBjklITIJIPAJKJHBLIKEBGLIEGLUIGHELGNELKBGLKJBjklITIJIPAJKJHBLIKEBGLIEGLUIGHELGNELKBGLKJBjklITIJIPAJKJHBLIKEBGLIEGLUIGHELGNELKBGLKJBjklITIJIPAJKJHBLIKEBGLIEGLUIGHELGNELKBGLKJBjklITIJIPAJKJHBLIKEBGLIEGLUIGHELGNELKBGLKJBjklITIJIPAJKJHBLIKEBGLIEGLUIGHELGNELKBGLKJBjklITIJIPAJKJHBLIKEBGLIEGLUIGHELGNELKBGLKJBjklITIJIPAJKJHBLIKEBGLIEGLUIGHELGNELKBGLKJBjklITIJIPAJKJHBLIKEBGLIEGLUIGHELGNELKBGLKJBjklITIJIPAJKJHBLIKEBGLIEGLUIGHELGNELKBGLKJBjklITIJIPAJKJHBLIKEBGLIEGLUIGHELGNELKBGLKJBjklITIJIPAJKJHBLIKEBGLIEGLUIGHELGNELKBGLKJBjklITIJIPAJKJHBLIKEBGLIEGLUIGHELGNELKBGLKJBjklITIJIPAJKJHBLIKEBGLIEGLUIGHELGNELKBGLKJBjklITIJIPAJKJHBLIKEBGLIEGLUIGHELGNELKBGLKJBjkl"
-      // );
     },
   },
   adapter: PrismaAdapter(prisma),
