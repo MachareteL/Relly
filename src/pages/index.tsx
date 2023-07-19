@@ -3,9 +3,10 @@ import { api } from "~/utils/api";
 import { useRouter } from "next/router";
 import { FormEvent, useState } from "react";
 import PostsList from "~/components/PostsList";
+import { LifebuoyIcon } from "@heroicons/react/24/outline";
 
 export default function Home() {
-  const { status } = useSession();
+  const { status, data } = useSession();
   const [content, setContent] = useState("");
   const ctx = api.useContext();
 
@@ -15,6 +16,7 @@ export default function Home() {
       ctx.post.invalidate();
     },
   });
+  const user = api.user.getUser.useQuery({ id: data?.user.id! });
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -25,36 +27,41 @@ export default function Home() {
 
   return (
     <>
-      <div className="absolute -z-20 hidden">
-        <svg width="608" height="535" xmlns="http://www.w3.org/2000/svg">
+      <div className="absolute -bottom-20 -left-10 -z-10 w-2/6 opacity-70 blur-md">
+        <svg
+          id="sw-js-blob-svg-2"
+          viewBox="0 0 100 100"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          {" "}
           <defs>
-            <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="a">
-              <stop stopColor="#60A5FA" stopOpacity="0" offset="0%" />
-              <stop stopColor="#F472B6" offset="100%" />
-            </linearGradient>
-            <filter
-              x="-37.5%"
-              y="-37.5%"
-              width="175%"
-              height="175%"
-              filterUnits="objectBoundingBox"
-              id="b"
-            >
-              <feGaussianBlur stdDeviation="50" in="SourceGraphic" />
-            </filter>
-          </defs>
-          <circle
-            filter="url(#b)"
-            cx="304"
-            cy="223"
-            r="200"
-            fill="url(#a)"
-            fillRule="evenodd"
-            fillOpacity=".32"
-          />
+            {" "}
+            <linearGradient id="sw-gradient2" x1="0" x2="1" y1="1" y2="0">
+              {" "}
+              <stop
+                id="stop3"
+                stopColor="rgba(236, 72, 153, 1)"
+                offset="0%"
+              ></stop>{" "}
+              <stop
+                id="stop4"
+                stopColor="rgba(168, 85, 247, 1)"
+                offset="100%"
+              ></stop>{" "}
+            </linearGradient>{" "}
+          </defs>{" "}
+          <path
+            fill="url(#sw-gradient2)"
+            d="M21.1,-37.9C27,-33.1,31.3,-26.8,35.7,-20.2C40,-13.7,44.5,-6.8,44.1,-0.3C43.6,6.3,38.1,12.5,33.3,18.4C28.5,24.3,24.5,29.9,19.1,33.1C13.6,36.4,6.8,37.3,0.1,37.2C-6.7,37,-13.3,35.8,-20.3,33.5C-27.3,31.1,-34.6,27.7,-38.5,21.9C-42.3,16.1,-42.7,8.1,-42.6,0.1C-42.5,-8,-42,-15.9,-38.1,-21.7C-34.3,-27.5,-27.2,-31.2,-20.3,-35.4C-13.4,-39.7,-6.7,-44.5,0.4,-45.3C7.6,-46,15.2,-42.7,21.1,-37.9Z"
+            width="100%"
+            height="100%"
+            transform="translate(50 50)"
+            stroke-width="0"
+            // style="transition: all 0.3s ease 0s;"
+          ></path>{" "}
         </svg>
       </div>
-      <div className="absolute -left-36 -top-96 w-3/4 -z-20 blur-md">
+      <div className="absolute -right-96 -top-96 -z-20 w-3/4 rotate-180 overflow-hidden blur-md">
         <svg
           id="sw-js-blob-svg"
           viewBox="0 0 100 100"
@@ -103,7 +110,7 @@ export default function Home() {
               />
               <button
                 type="submit"
-                className="place-self-end rounded-lg bg-fuchsia-500 px-4 py-2 text-white"
+                className="place-self-end rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 px-4 py-2 text-white"
               >
                 Post
               </button>
@@ -112,7 +119,13 @@ export default function Home() {
           <RecentPosts />
         </div>
         <div className="col-span-3">
-          <div className="relative h-52 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500"></div>
+          <div className="h-52 rounded-lg border border-white border-opacity-30 bg-[rgba(255,255,255,0.2)] p-4 backdrop-blur-xl">
+            <h1 className="text-3xl font-bold">Balance</h1>
+            <h1 className="flex items-center text-lg font-medium">
+              <LifebuoyIcon className="h-6" />
+              {user.data?.points} Rellies
+            </h1>
+          </div>
         </div>
       </div>
     </>

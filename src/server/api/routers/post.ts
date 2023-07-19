@@ -96,12 +96,12 @@ export const postRouter = createTRPCRouter({
           userId_postId: data,
         },
       });
-      if (like == null) {
+      // if (like == null) {
         await ctx.prisma.like.create({ data });
         return { liked: true };
-      } else {
-        await ctx.prisma.like.delete({ where: { userId_postId: data } });
-        return { liked: false };
-      }
+      // } else {
+      //   await ctx.prisma.like.delete({ where: { userId_postId: data } });
+      //   return { liked: false };
+      // }
     }),
 });
