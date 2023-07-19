@@ -18,7 +18,7 @@ export default function Home() {
       ctx.post.invalidate();
     },
   });
-  const user = api.user.getRelliesAmmount.useQuery({ id: data?.user.id! });
+  const user = api.user.getRelliesAmmount.useQuery();
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -122,7 +122,7 @@ export default function Home() {
             <h1 className="text-3xl font-bold">Balance</h1>
             <h1 className="flex items-center text-lg font-medium">
               <LifebuoyIcon className="h-6" />
-              {""} Rellies
+              {user.data?.relliesAmmount} Rellies
             </h1>
           </div>
         </div>
