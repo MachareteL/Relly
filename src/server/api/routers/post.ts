@@ -21,20 +21,8 @@ export const postRouter = createTRPCRouter({
         take: 11,
         skip: 10 * cursor,
         orderBy: { createdAt: "desc" },
-        select: {
-          id: true,
-          content: true,
-          createdAt: true,
-          _count: {
-            select: {
-              rellies: true,
-            },
-          },
-          rellies: {
-            where: {
-              userId: currentUserID,
-            },
-          },
+        include: {
+          rellies: true,
           user: {
             select: {
               name: true,
@@ -45,6 +33,34 @@ export const postRouter = createTRPCRouter({
         },
       });
 
+      // const posts = await ctx.prisma.post.findMany({
+      //   take: 11,
+      //   skip: 10 * cursor,
+      //   orderBy: { createdAt: "desc" },
+      //   select: {
+      //     id: true,
+      //     content: true,
+      //     createdAt: true,
+      //     _count: {
+      //       select: {
+      //         rellies: true,
+      //       },
+      //     },
+      //     rellies: {
+      //       where: {
+      //         userId: currentUserID,
+      //       },
+      //     },
+      //     user: {
+      //       select: {
+      //         name: true,
+      //         id: true,
+      //         image: true,
+      //       },
+      //     },
+      //   },
+      // });
+
       let nextCursor: typeof cursor | undefined;
       if (posts.length > 10) {
         const nextPost = posts.pop();
@@ -54,11 +70,17 @@ export const postRouter = createTRPCRouter({
       }
       return {
         posts: posts.map((post) => {
+          let likeCount = 0;
+          post.rellies.map((relly) => {
+            if (relly.ammount) {
+              likeCount += relly.ammount;
+            }
+          });
           return {
             id: post.id,
             content: post.content,
             createdAt: post.createdAt,
-            likeCount: post._count.rellies,
+            likeCount,
             user: post.user,
             likedByUser: post.rellies?.length > 0,
           };
@@ -83,26 +105,30 @@ export const postRouter = createTRPCRouter({
         },
       });
     }),
-  toggleLike: protectedProcedure
+  relly: protectedProcedure
     .input(
       z.object({
         id: z.string(),
-        ammount: z.number()
+        ammount: z.number().optional(),
       })
     )
     .mutation(async ({ input: { id, ammount = 1 }, ctx }) => {
-      const data = { postId: id, userId: ctx.session.user.id, ammount };
-      const like = await ctx.prisma.rellies.findUnique({
+      const data = { postId: id, userId: ctx.session.user.id };
+      const relly = await ctx.prisma.rellies.findUnique({
         where: {
           userId_postId: data,
         },
       });
-      // if (like == null) {
-        await ctx.prisma.rellies.create({ data });
-        return { liked: true };
-      // } else {
-      //   await ctx.prisma.like.delete({ where: { userId_postId: data } });
-      //   return { liked: false };
-      // }
+      if (relly == null) {
+        await ctx.prisma.rellies.create({
+          data: { postId: id, userId: ctx.session.user.id, ammount },
+        });
+      } else {
+        await ctx.prisma.rellies.update({
+          where: { userId_postId: data },
+          data: { ammount: { increment: 2 } },
+        });
+      }
+      return relly
     }),
 });

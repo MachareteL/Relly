@@ -15,7 +15,7 @@ export default function PostModel({
   likedByUser,
 }: Posts) {
 
-  const toggleLike = api.post.toggleLike.useMutation({
+  const toggleLike = api.post.relly.useMutation({
     onSuccess: async () => {
     await ctx.post.getAll.invalidate()
     },
@@ -23,9 +23,10 @@ export default function PostModel({
 
   const ctx = api.useContext()
 
-  function handleToggleLike(id: string) {
+  function handleRelly(id: string) {
     toggleLike.mutate({ id });
   }
+  
   return (
     <li className="flex gap-4 rounded-lg bg-[rgba(100,116,139,0.5)] px-4 pb-2 pt-4 backdrop-blur-3xl">
       <Link href={`/profile/${user.id}`} className="h-fit">
@@ -40,7 +41,7 @@ export default function PostModel({
         <p className="flex-grow whitespace-pre-wrap">{content}</p>
         <div className="flex justify-between text-center">
           <button
-            onClick={() => handleToggleLike(id)}
+            onClick={() => handleRelly(id)}
             disabled={toggleLike.isLoading}
             className="flex items-center space-x-1 rounded-lg text-indigo-400 hover:text-slate-300"
           >

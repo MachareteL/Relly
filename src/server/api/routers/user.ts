@@ -1,6 +1,10 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from "~/server/api/trpc";
 
 export const userRouter = createTRPCRouter({
   getUser: protectedProcedure.query(async ({ ctx }) => {
@@ -19,14 +23,14 @@ export const userRouter = createTRPCRouter({
     }
     return user;
   }),
-  getProfile: protectedProcedure
+  getProfile: publicProcedure
     .input(
       z.object({
         id: z.string(),
       })
     )
     .query(async ({ input: { id }, ctx }) => {
-      const currentUserId = ctx.session.user.id;
+      const currentUserId = ctx.session?.user.id;
       const profile = await ctx.prisma.user.findUnique({
         where: { id },
         select: {
@@ -35,7 +39,10 @@ export const userRouter = createTRPCRouter({
           _count: {
             select: { followedBy: true, following: true, posts: true },
           },
-          followedBy: { where: { followerId: currentUserId } },
+          followedBy:
+            currentUserId == null
+              ? undefined
+              : { where: { followerId: currentUserId } },
         },
       });
 
@@ -52,6 +59,6 @@ export const userRouter = createTRPCRouter({
         followingCount: profile._count.following,
         postsCount: profile._count.posts,
         followedByCurrentUser: profile.followedBy.length > 0,
-      }
+      };
     }),
 });

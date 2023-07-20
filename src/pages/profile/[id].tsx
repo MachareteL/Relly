@@ -1,26 +1,26 @@
-import { GetStaticPaths, GetStaticPropsContext } from "next";
+import type {
+  GetStaticPaths,
+  GetStaticPropsContext,
+  InferGetStaticPropsType,
+  NextPage,
+} from "next";
+import { ssgHelper } from "~/server/api/ssgHgelpr";
 import { api } from "~/utils/api";
-import { createServerSideHelpers } from "@trpc/react-query/server";
-import { appRouter } from "~/server/api/root";
-import SuperJSON from "superjson";
-import { createInnerTRPCContext } from "~/server/api/trpc";
-//{ posts }: { posts: unknown }
-// console.log(posts);
 
-export default function Profile() {
-  // const { query } = useRouter();
-  // const teste = api.user.getProfile.useQuery({  : query.id });
-
+const Profile: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
+  id,
+}) => {
+  const { data } = api.user.getProfile.useQuery({ id });
+  if (!data) {
+    return <> ERROR </>;
+  }
   return (
     <>
-      <div>TesteEEE</div>
+      <img src={data.picture!} alt="" className="rounded-full" />
     </>
   );
-}
+};
 
-// This function gets called at build time on server-side.
-// It may be called again, on a serverless function, if
-// revalidation is enabled and a new request comes in
 export async function getStaticProps(
   ctx: GetStaticPropsContext<{ id: string }>
 ) {
@@ -28,14 +28,12 @@ export async function getStaticProps(
   if (!id) {
     return;
   }
-  const ssg = createServerSideHelpers({
-    router: appRouter,
-    ctx: createInnerTRPCContext({ session: null }),
-    transformer: SuperJSON,
-  });
+  const ssg = ssgHelper();
   await ssg.user.getProfile.prefetch({ id });
   return {
-    props: {},
+    props: {
+      id,
+    },
   };
 }
 
@@ -45,3 +43,4 @@ export const getStaticPaths: GetStaticPaths = () => {
     fallback: "blocking",
   };
 };
+export default Profile;
