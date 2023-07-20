@@ -37,7 +37,7 @@ export default function PostModel({
             {user.name}
           </Link>
         </div>
-        <p className="flex-grow whitespace-nowrap">{content}</p>
+        <p className="flex-grow whitespace-pre-wrap break-all">{content}</p>
         <div className="flex justify-between text-center">
           <button
             onClick={() => handleRelly(id)}
