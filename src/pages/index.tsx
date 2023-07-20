@@ -22,11 +22,11 @@ export default function Home() {
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    newPost.mutate({ content });
+    newPost.mutate({ content: content.replace(/\n{3,}/g, "\n\n").trim() });
   }
   return (
     <>
-      <div className="absolute -top-20 -left-32 -z-10 w-3/6 opacity-80 blur-md rotate-45">
+      <div className="absolute -left-32 -top-20 -z-10 w-3/6 rotate-45 opacity-80 blur-md">
         <svg
           id="sw-js-blob-svg"
           viewBox="0 0 100 100"
@@ -67,11 +67,11 @@ export default function Home() {
       <div className="container m-auto min-h-screen gap-2 p-4 sm:grid sm:grid-cols-12">
         <div className="col-span-2 hidden bg-slate-500 sm:block"></div>
         <div className="sm:col-span-7">
-          <div className="">
+          <div className="mb-4 rounded-lg border border-white border-opacity-30 bg-white bg-opacity-20 p-4">
             <form onSubmit={handleSubmit} className="flex flex-col gap-4 pb-2">
               <textarea
                 name="content"
-                className="flex-grow resize-none overflow-hidden rounded-lg bg-gray-500 p-4 text-base outline-0 ring-1 placeholder:text-slate-200 focus:ring-white"
+                className="flex-grow resize-none overflow-hidden rounded-lg bg-white bg-opacity-20 p-4 text-base outline-0 ring-1 placeholder:text-slate-200 focus:ring-white"
                 placeholder="Hello World! :D"
                 onChange={(e) => setContent(e.target.value)}
                 maxLength={256}
@@ -88,7 +88,7 @@ export default function Home() {
           <RecentPosts />
         </div>
         <div className="-z-20 hidden sm:col-span-3 sm:block">
-          <div className="h-52 rounded-lg border border-white border-opacity-30 bg-[rgba(255,255,255,0.2)] p-4 backdrop-blur-xl">
+          <div className="rounded-lg border border-white border-opacity-30 bg-white bg-opacity-20 p-4 backdrop-blur-xl">
             <h1 className="text-3xl font-bold">Balance</h1>
             <h1 className="flex items-center text-lg font-medium">
               <LifebuoyIcon className="h-6" />
@@ -109,8 +109,8 @@ function RecentPosts() {
         getNextPageParam: (lastPage) => lastPage.nextCursor,
       }
     );
-  console.log(data?.pages[0]?.posts[0]?.likeCount);
-  
+  // console.log(data?.pages[0]?.posts[0]?.likeCount);
+
   return (
     <PostsList
       posts={data?.pages.flatMap((page) => page.posts)}

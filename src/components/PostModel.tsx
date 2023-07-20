@@ -4,7 +4,6 @@ import { ProfileImage } from "./ProfileImage";
 import { LifebuoyIcon as LifebuoyIconOut } from "@heroicons/react/24/outline";
 import { LifebuoyIcon as LifebuoyIconSolid } from "@heroicons/react/24/solid";
 import { api } from "~/utils/api";
-import Swal from "sweetalert2";
 
 export default function PostModel({
   id,
@@ -14,19 +13,19 @@ export default function PostModel({
   likeCount,
   likedByUser,
 }: Posts) {
-
-  const toggleLike = api.post.relly.useMutation({
+  const addRelly = api.post.relly.useMutation({
     onSuccess: async () => {
-    await ctx.post.getAll.invalidate()
+      await ctx.post.getAll.invalidate();
     },
   });
 
-  const ctx = api.useContext()
+  const ctx = api.useContext();
 
   function handleRelly(id: string) {
-    toggleLike.mutate({ id });
+
+    addRelly.mutate({ id });
   }
-  
+
   return (
     <li className="flex gap-4 rounded-lg bg-[rgba(100,116,139,0.5)] px-4 pb-2 pt-4 backdrop-blur-3xl">
       <Link href={`/profile/${user.id}`} className="h-fit">
@@ -38,11 +37,11 @@ export default function PostModel({
             {user.name}
           </Link>
         </div>
-        <p className="flex-grow whitespace-pre-wrap">{content}</p>
+        <p className="flex-grow whitespace-nowrap">{content}</p>
         <div className="flex justify-between text-center">
           <button
             onClick={() => handleRelly(id)}
-            disabled={toggleLike.isLoading}
+            disabled={addRelly.isLoading}
             className="flex items-center space-x-1 rounded-lg text-indigo-400 hover:text-slate-300"
           >
             {likedByUser ? (
