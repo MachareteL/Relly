@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React from "react";
 import { ProfileImage } from "./ProfileImage";
-import { TrashIcon } from "@heroicons/react/24/outline";
+import { LifebuoyIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { api } from "~/utils/api";
 import RellyButton from "./RellyButton";
 
@@ -35,7 +35,7 @@ export default function PostModel({
   }
 
   return (
-    <li className="flex gap-4 rounded-lg bg-[rgba(100,116,139,0.5)] px-4 pb-2 pt-4 backdrop-blur-3xl">
+    <li className="flex gap-4 overflow-hidden rounded-lg bg-[rgba(100,116,139,0.5)] px-4 pb-2 pt-4 backdrop-blur-3xl">
       <Link href={`/profile/${user.id}`} className="h-fit">
         <ProfileImage src={user.image} />
       </Link>
@@ -57,15 +57,40 @@ export default function PostModel({
             disabled={addRelly.isLoading}
             className="flex items-center space-x-1 rounded-lg text-indigo-400 hover:text-slate-300"
           >
-            <p>{likeCount}</p>
-          </button> */}
-          <RellyButton
-            handleRelly={handleRelly}
-            id={id}
-            likedByUser={likedByUser}
-            className=""
-          />
-          <span className="text-fray-500 self-end text-xs">
+         </button> */}
+          <div className="flex w-full items-center justify-between sm:w-2/4 sm:pr-20">
+            <span className="flex items-center">
+              <LifebuoyIcon className="h-5 w-5" />
+              <p>{likeCount}</p>
+            </span>
+            <div className="flex items-center">
+              <RellyButton
+                handleRelly={handleRelly}
+                id={id}
+                likedByUser={likedByUser}
+                className="px-2"
+                onClickColor="ffegde"
+                value={1}
+              />
+              <RellyButton
+                handleRelly={handleRelly}
+                id={id}
+                likedByUser={likedByUser}
+                className="px-2"
+                onClickColor="ff0081"
+                value={5}
+              />
+              <RellyButton
+                handleRelly={handleRelly}
+                id={id}
+                likedByUser={likedByUser}
+                className="px-2"
+                onClickColor="ff0081"
+                value={15}
+              />
+            </div>
+          </div>
+          <span className="self-end text-xs text-gray-300">
             -{createdAt.toDateString()}
           </span>
         </div>

@@ -26,8 +26,10 @@ type PostsListProps = {
 };
 
 type RellyButtonProps = {
-  handleRelly: (id: string, ammount: number) => unknown
-  id: string
-  likedByUser: boolean
-  className: string
-}
+  handleRelly: (id: string, ammount: number) => unknown;
+  id: string;
+  likedByUser: boolean;
+  className: string;
+  value: number;
+  onClickColor: string;
+};
