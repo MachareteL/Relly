@@ -5,13 +5,14 @@ import PostsList from "~/components/PostsList";
 import { LifebuoyIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import avif from "public/docs-dark@30.1a9f8cbf.avif";
-export default function Home() {
+import type { NextPage } from "next";
+
+const Home: NextPage = ({}) => {
   const { status } = useSession({
     required: true,
   });
   const [content, setContent] = useState("");
   const ctx = api.useContext();
-
   const newPost = api.post.create.useMutation({
     onSuccess: () => {
       setContent("");
@@ -24,6 +25,8 @@ export default function Home() {
     e.preventDefault();
     newPost.mutate({ content: content.replace(/\n{3,}/g, "\n\n").trim() });
   }
+
+
   return (
     <>
       <div className="absolute -left-32 -top-20 -z-10 w-3/6 rotate-45 opacity-80 blur-md">
@@ -99,7 +102,9 @@ export default function Home() {
       </div>
     </>
   );
-}
+};
+
+export default Home;
 
 function RecentPosts() {
   const { data, isError, isLoading, hasNextPage, fetchNextPage } =

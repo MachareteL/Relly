@@ -1,6 +1,7 @@
 import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import PostModel from "./PostModel";
+import { useSession } from "next-auth/react";
 
 export default function PostsList({
   posts,
@@ -12,6 +13,7 @@ export default function PostsList({
   if (isLoading) return <>Loading...</>;
   if (isError) return <>Sorry! An error occured...</>;
   if (posts == null || posts.length == 0) return <>No posts yet, say hi!</>;
+  const { data } = useSession();
   return (
     <ul>
       <InfiniteScroll
@@ -20,9 +22,14 @@ export default function PostsList({
         hasMore={hasMore}
         loader={"Loading..."}
         className="space-y-2"
+        style={{ transition: "ease-in-out 1s" }}
       >
         {posts.map((post) => (
-          <PostModel key={post.id} {...post} />
+          <PostModel
+            key={post.id}
+            {...post}
+            createdByCurrentUser={post.user.id == data?.user.id}
+          />
         ))}
       </InfiniteScroll>
     </ul>

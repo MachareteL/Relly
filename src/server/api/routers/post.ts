@@ -129,6 +129,27 @@ export const postRouter = createTRPCRouter({
           data: { ammount: { increment: 2 } },
         });
       }
-      return relly
+      return relly;
+    }),
+  delete: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ input: { id }, ctx }) => {
+      if (!id) {
+        throw new TRPCError({ code: "NOT_FOUND" });
+      }
+      const post = await ctx.prisma.post.findUnique({
+        where: {
+          id,
+        },
+      });
+      if (post) {
+        await ctx.prisma.post.delete({
+          where: {
+            id,
+          },
+        });
+        return { deleted: true };
+      }
+      return { deleted: false };
     }),
 });

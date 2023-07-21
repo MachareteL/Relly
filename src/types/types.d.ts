@@ -9,6 +9,7 @@ type Posts = {
   createdAt: Date;
   likeCount: number;
   likedByUser: boolean;
+  createdByCurrentUser?: boolean;
   user: {
     id: string;
     image: string | null;
@@ -23,3 +24,10 @@ type PostsListProps = {
   fetchNewPosts: () => Promise<unknown>;
   posts?: Posts[];
 };
+
+type RellyButtonProps = {
+  handleRelly: (id: string, ammount: number) => unknown
+  id: string
+  likedByUser: boolean
+  className: string
+}
