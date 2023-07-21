@@ -17,6 +17,7 @@ const Home: NextPage = ({}) => {
     onSuccess: () => {
       setContent("");
       ctx.post.invalidate();
+      ctx.user.invalidate()
     },
   });
   const user = api.user.getUser.useQuery();

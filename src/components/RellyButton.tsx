@@ -1,16 +1,13 @@
-import { type SyntheticEvent, useState, useEffect } from "react";
-import { LifebuoyIcon as LifebuoyIconSolid } from "@heroicons/react/24/solid";
+import { type SyntheticEvent, useState } from "react";
 import { LifebuoyIcon as LifebuoyIconOut } from "@heroicons/react/24/outline";
 export default function RellyButton({
   handleRelly,
   id,
-  likedByUser,
   className,
-  onClickColor,
   value,
 }: RellyButtonProps) {
   const [shouldBeAnimated, setShouldBeAnimated] = useState(false);
-  var animate = function (e: SyntheticEvent<HTMLButtonElement>) {
+  var animate = async function (e: SyntheticEvent<HTMLButtonElement>) {
     setShouldBeAnimated(true);
     setTimeout(() => {
       setShouldBeAnimated(false);
