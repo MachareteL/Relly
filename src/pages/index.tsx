@@ -26,7 +26,6 @@ const Home: NextPage = ({}) => {
     newPost.mutate({ content: content.replace(/\n{3,}/g, "\n\n").trim() });
   }
 
-
   return (
     <>
       <div className="absolute -left-32 -top-20 -z-10 w-3/6 rotate-45 opacity-80 blur-md">
@@ -76,6 +75,12 @@ const Home: NextPage = ({}) => {
                 name="content"
                 className="flex-grow resize-none overflow-hidden rounded-lg bg-white bg-opacity-20 p-4 text-base outline-0 ring-1 placeholder:text-slate-200 focus:ring-white"
                 placeholder="Hello World! :D"
+                onKeyDown={(e) => {
+                  if (e.key == "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    handleSubmit(e);
+                  }
+                }}
                 onChange={(e) => setContent(e.target.value)}
                 maxLength={256}
                 value={content}

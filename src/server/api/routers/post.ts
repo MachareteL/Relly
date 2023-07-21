@@ -109,25 +109,71 @@ export const postRouter = createTRPCRouter({
     .input(
       z.object({
         id: z.string(),
-        ammount: z.number().optional(),
+        ammount: z.number(),
       })
     )
-    .mutation(async ({ input: { id, ammount = 1 }, ctx }) => {
+    .mutation(async ({ input: { id, ammount }, ctx }) => {
       const data = { postId: id, userId: ctx.session.user.id };
       const relly = await ctx.prisma.rellies.findUnique({
         where: {
           userId_postId: data,
         },
       });
+      const user = await ctx.prisma.user.findUnique({
+        where: {
+          id: ctx.session.user.id,
+        },
+        select: {
+          relliesAmmount: true,
+        },
+      });
+      if (!user) {
+        throw new TRPCError({ code: "UNAUTHORIZED" });
+      }
+      if (user.relliesAmmount == 0 || user.relliesAmmount - ammount <= 0) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "You don't have enough resources to perform this action",
+        });
+      }
+
       if (relly == null) {
-        await ctx.prisma.rellies.create({
-          data: { postId: id, userId: ctx.session.user.id, ammount },
-        });
+        try {
+          await ctx.prisma.user.update({
+            where: {
+              id: ctx.session.user.id,
+            },
+            data: {
+              relliesAmmount: { decrement: ammount },
+            },
+          });
+          await ctx.prisma.rellies.create({
+            data: { postId: id, userId: ctx.session.user.id, ammount },
+          });
+        } catch {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+          });
+        }
       } else {
-        await ctx.prisma.rellies.update({
-          where: { userId_postId: data },
-          data: { ammount: { increment: 2 } },
-        });
+        try {
+          await ctx.prisma.user.update({
+            where: {
+              id: ctx.session.user.id,
+            },
+            data: {
+              relliesAmmount: { decrement: ammount },
+            },
+          });
+          await ctx.prisma.rellies.update({
+            where: { userId_postId: data },
+            data: { ammount: { increment: ammount } },
+          });
+        } catch {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+          });
+        }
       }
       return relly;
     }),
