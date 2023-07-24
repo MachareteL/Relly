@@ -32,7 +32,7 @@ export default function TrendingPostsList({
               key={post.id}
               {...post}
               createdByCurrentUser={post.user.id == data?.user.id}
-              className="bg-gradient-to-r from-[rgba(0,0,0,0.25)] to-[rgba(255,255,255,0.2)] border border-white border-opacity-30"
+              className="bg-white bg-opacity-20 border border-white border-opacity-30"
             />
           );
         })}

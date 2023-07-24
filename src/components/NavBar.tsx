@@ -6,11 +6,6 @@ import { signOut, useSession } from "next-auth/react";
 import { ProfileImage } from "./ProfileImage";
 import Link from "next/link";
 
-const navigation = [
-  { name: "Posts", href: "#", current: true },
-  { name: "Publicar", href: "#", current: false },
-];
-
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
@@ -19,6 +14,14 @@ export default function Navbar() {
   const pathname = usePathname();
   const session = useSession();
   // console.log(session);
+  const navigation = [
+    { name: "Feed", href: "#", current: pathname == "/" ? true : false },
+    {
+      name: "Relly",
+      href: "#",
+      current: pathname == "/currency" ? true : false,
+    },
+  ];
 
   if (pathname == "/signup") return null;
   return (
@@ -123,19 +126,19 @@ export default function Navbar() {
                   <div className="hidden sm:ml-6 sm:block">
                     <div className="flex space-x-4">
                       {navigation.map((item) => (
-                        <a
+                        <Link
                           key={item.name}
                           href={item.href}
                           className={classNames(
                             item.current
-                              ? "bg-gray-900 text-white"
+                              ? "relative text-white  after:h-[2px]"
                               : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                            "rounded-md px-3 py-2 text-sm font-medium"
+                            "rounded-md px-4 py-3 text-sm font-medium after:absolute after:bottom-0 after:left-0 after:w-full after:bg-white"
                           )}
                           aria-current={item.current ? "page" : undefined}
                         >
                           {item.name}
-                        </a>
+                        </Link>
                       ))}
                     </div>
                   </div>
@@ -145,7 +148,10 @@ export default function Navbar() {
                   <Menu as="div" className="relative ml-3 ">
                     <div>
                       <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                        <ProfileImage src={session.data?.user?.image} className="h-9 w-8"/>
+                        <ProfileImage
+                          src={session.data?.user?.image}
+                          className="h-9 w-8"
+                        />
                       </Menu.Button>
                     </div>
                     <Transition

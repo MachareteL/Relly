@@ -68,10 +68,10 @@ const Home: NextPage = ({}) => {
       <div className="absolute -top-10 right-0 -z-20 w-3/4">
         <Image src={avif} alt="backgroundElement" />
       </div>
-      <div className="lg:container lg:m-auto min-h-screen gap-2 p-4 md:grid md:grid-cols-12">
-        <div className="md:col-span-7">
-          <div className="mb-4 rounded-lg border border-white border-opacity-30 bg-white bg-opacity-20 p-4">
-            <form onSubmit={handleSubmit} className="flex flex-col gap-4 pb-2">
+      <div className="min-h-screen gap-4 p-4 lg:container md:grid md:grid-cols-12 lg:m-auto">
+        <div className="md:col-span-8">
+          <div className="mb-4 rounded-lg border border-white border-opacity-60 bg-white bg-opacity-20 p-4">
+            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
               <textarea
                 name="content"
                 className="flex-grow resize-none overflow-hidden rounded-lg bg-white bg-opacity-20 p-4 text-base outline-0 ring-1 placeholder:text-slate-200 focus:ring-white"
@@ -97,15 +97,16 @@ const Home: NextPage = ({}) => {
           {/* trending */}
           <RecentPosts />
         </div>
-        <div className=" hidden md:col-span-5 md:block md:space-y-2">
-          <div className="rounded-lg border border-white border-opacity-30 bg-white bg-opacity-20 p-4 backdrop-blur-xl">
+        <div className=" hidden md:col-span-4 md:block md:space-y-4">
+          <div className="rounded-lg border border-white border-opacity-70 bg-white bg-opacity-20 p-4 backdrop-blur-xl">
             <h1 className="text-3xl font-bold">Balance</h1>
             <h1 className="flex items-center text-lg font-medium">
               <LifebuoyIcon className="h-6" />
               {user.data?.relliesAmmount} Rellies
             </h1>
           </div>
-          <div className="h-full">
+          <div className="h-full flex flex-col">
+            <span className="text-end italic">Last 48h most Rellyful posts</span>
             <RecentTopPosts />
           </div>
         </div>

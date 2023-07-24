@@ -17,8 +17,16 @@ export const postRouter = createTRPCRouter({
       // const currentUserID = await ctx.session?.user.id;
       const posts = await ctx.prisma.post.findMany({
         take: 11,
+        // where: {
+        //   user: { followedBy: { some: { followerId: ctx.session.user.id } } },
+        //   OR: {
+        //     createdAt: {
+        //       gt: new Date(new Date().getTime() - 4000 * 60 * 60 * 1000),
+        //     },
+        //   },
+        // },
         skip: 10 * cursor,
-        orderBy: { createdAt: "desc" },
+        orderBy: [{ createdAt: "desc" }],
         include: {
           rellies: true,
           user: {
@@ -95,9 +103,14 @@ export const postRouter = createTRPCRouter({
     )
     .query(async ({ input: { cursor = 0 }, ctx }) => {
       const posts = await ctx.prisma.post.findMany({
+        where: {
+          createdAt: {
+            gte: new Date(new Date().getTime() - 48 * 60 * 60 * 1000),
+          },
+        },
         take: 11,
         skip: 10 * cursor,
-        orderBy: [{ createdAt: "desc" }, { rellies: { _count: "desc" } }],
+        orderBy: [{ rellies: { _count: "desc" } }, { createdAt: "desc" }],
         include: {
           rellies: true,
           user: {

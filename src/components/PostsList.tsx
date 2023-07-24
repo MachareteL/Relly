@@ -28,7 +28,7 @@ export default function PostsList({
           <PostModel
             key={post.id}
             {...post}
-            className="bg-white bg-opacity-20 border border-white border-opacity-30"
+            className="border border-white border-opacity-30 bg-white bg-opacity-20"
             createdByCurrentUser={post.user.id == data?.user.id}
           />
         ))}
