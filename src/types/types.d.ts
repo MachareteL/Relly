@@ -15,6 +15,7 @@ type Posts = {
     image: string | null;
     name: string | null;
   };
+  className?: string;
 };
 
 type PostsListProps = {
@@ -25,11 +26,18 @@ type PostsListProps = {
   posts?: Posts[];
 };
 
+type author = {
+  id: string;
+  image: string | null;
+  name: string | null;
+};
+
 type RellyButtonProps = {
-  handleRelly: (id: string, ammount: number) => unknown;
+  handleRelly: (id: string, ammount: number, authorId: string) => unknown;
   id: string;
   likedByUser: boolean;
   className: string;
   value: number;
   onClickColor: string;
+  author: author;
 };

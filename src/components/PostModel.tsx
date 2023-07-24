@@ -13,10 +13,12 @@ export default function PostModel({
   likeCount,
   likedByUser,
   createdByCurrentUser,
+  className
 }: Posts) {
   const addRelly = api.post.relly.useMutation({
     onSuccess: async () => {
       await ctx.post.getAll.invalidate();
+      await ctx.user.getUser.invalidate();
     },
   });
   const deletePost = api.post.delete.useMutation({
@@ -26,8 +28,8 @@ export default function PostModel({
   });
   const ctx = api.useContext();
 
-  function handleRelly(id: string, ammount: number) {
-    addRelly.mutate({ id, ammount });
+  function handleRelly(id: string, ammount: number, authorId: string) {
+    addRelly.mutate({ id, ammount, authorId });
   }
 
   function handleDelete(id: string) {
@@ -41,11 +43,11 @@ export default function PostModel({
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.3 }}
     >
-      <li className="flex gap-4 overflow-hidden rounded-lg bg-[rgba(100,116,139,0.5)] px-4 pb-2 pt-4 backdrop-blur-3xl">
+      <li className={`flex gap-4 overflow-hidden rounded-lg bg-[rgba(100,116,139,0.5)] px-4 pb-2 pt-4 backdrop-blur-3xl ${className}`}>
         <Link href={`/profile/${user.id}`} className="h-fit">
-          <ProfileImage src={user.image} />
+          <ProfileImage src={user.image} className="h-8 w-8"/>
         </Link>
-        <div className="flex flex-grow flex-col gap-1">
+        <div className="flex flex-grow flex-col gap-1 max-w-full">
           <div className="flex justify-between gap-1">
             <Link href={`/profile/${user.id}`} className="font-bold">
               {user.name}
@@ -77,6 +79,7 @@ export default function PostModel({
                   className="px-2"
                   onClickColor="ffegde"
                   value={1}
+                  author={user}
                 />
                 <RellyButton
                   handleRelly={handleRelly}
@@ -85,6 +88,7 @@ export default function PostModel({
                   className="px-2"
                   onClickColor="ff0081"
                   value={5}
+                  author={user}
                 />
                 <RellyButton
                   handleRelly={handleRelly}
@@ -93,6 +97,7 @@ export default function PostModel({
                   className="px-2"
                   onClickColor="ff0081"
                   value={15}
+                  author={user}
                 />
               </div>
             </div>

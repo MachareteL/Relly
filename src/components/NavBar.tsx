@@ -145,7 +145,7 @@ export default function Navbar() {
                   <Menu as="div" className="relative ml-3 ">
                     <div>
                       <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                        <ProfileImage src={session.data?.user?.image} />
+                        <ProfileImage src={session.data?.user?.image} className="h-9 w-8"/>
                       </Menu.Button>
                     </div>
                     <Transition

@@ -5,6 +5,7 @@ export default function RellyButton({
   id,
   className,
   value,
+  author
 }: RellyButtonProps) {
   const [shouldBeAnimated, setShouldBeAnimated] = useState(false);
   var animate = async function (e: SyntheticEvent<HTMLButtonElement>) {
@@ -12,7 +13,7 @@ export default function RellyButton({
     setTimeout(() => {
       setShouldBeAnimated(false);
     }, 500);
-    handleRelly(id, value);
+    handleRelly(id, value, author.id);
   };
 
   return (

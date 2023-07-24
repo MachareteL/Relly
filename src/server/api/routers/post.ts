@@ -14,9 +14,7 @@ export const postRouter = createTRPCRouter({
       })
     )
     .query(async ({ input: { cursor = 0 }, ctx }) => {
-      console.log(cursor);
-
-      const currentUserID = await ctx.session?.user.id;
+      // const currentUserID = await ctx.session?.user.id;
       const posts = await ctx.prisma.post.findMany({
         take: 11,
         skip: 10 * cursor,
@@ -89,6 +87,55 @@ export const postRouter = createTRPCRouter({
       };
     }),
 
+  getTrending: protectedProcedure
+    .input(
+      z.object({
+        cursor: z.number().optional(),
+      })
+    )
+    .query(async ({ input: { cursor = 0 }, ctx }) => {
+      const posts = await ctx.prisma.post.findMany({
+        take: 11,
+        skip: 10 * cursor,
+        orderBy: [{ createdAt: "desc" }, { rellies: { _count: "desc" } }],
+        include: {
+          rellies: true,
+          user: {
+            select: {
+              name: true,
+              id: true,
+              image: true,
+            },
+          },
+        },
+      });
+      let nextCursor: typeof cursor | undefined;
+      if (posts.length > 10) {
+        const nextPost = posts.pop();
+        if (nextPost != null) {
+          nextCursor = cursor + 1;
+        }
+      }
+      return {
+        posts: posts.map((post) => {
+          let likeCount = 0;
+          post.rellies.map((relly) => {
+            if (relly.ammount) {
+              likeCount += relly.ammount;
+            }
+          });
+          return {
+            id: post.id,
+            content: post.content,
+            createdAt: post.createdAt,
+            likeCount,
+            user: post.user,
+            likedByUser: post.rellies?.length > 0,
+          };
+        }),
+        nextCursor,
+      };
+    }),
   create: protectedProcedure
     .input(z.object({ content: z.string() }))
     .mutation(async ({ input: { content }, ctx }) => {
@@ -110,9 +157,10 @@ export const postRouter = createTRPCRouter({
       z.object({
         id: z.string(),
         ammount: z.number(),
+        authorId: z.string(),
       })
     )
-    .mutation(async ({ input: { id, ammount }, ctx }) => {
+    .mutation(async ({ input: { id, ammount, authorId }, ctx }) => {
       const data = { postId: id, userId: ctx.session.user.id };
       const relly = await ctx.prisma.rellies.findUnique({
         where: {
@@ -125,17 +173,22 @@ export const postRouter = createTRPCRouter({
         },
         select: {
           relliesAmmount: true,
+          id: true,
         },
       });
+
       if (!user) {
         throw new TRPCError({ code: "UNAUTHORIZED" });
       }
-      if (user.relliesAmmount == 0 || user.relliesAmmount - ammount <= 0) {
+
+      if (user.relliesAmmount == 0 || user.relliesAmmount - ammount < 0) {
         throw new TRPCError({
           code: "FORBIDDEN",
           message: "You don't have enough resources to perform this action",
         });
       }
+
+      const autoRelly = relly?.userId == authorId;
 
       if (relly == null) {
         try {
@@ -150,6 +203,18 @@ export const postRouter = createTRPCRouter({
           await ctx.prisma.rellies.create({
             data: { postId: id, userId: ctx.session.user.id, ammount },
           });
+          if (!autoRelly) {
+            await ctx.prisma.user.update({
+              where: {
+                id: authorId,
+              },
+              data: {
+                relliesAmmount: {
+                  increment: Math.round(ammount * 0.8),
+                },
+              },
+            });
+          }
         } catch {
           throw new TRPCError({
             code: "INTERNAL_SERVER_ERROR",
@@ -169,6 +234,18 @@ export const postRouter = createTRPCRouter({
             where: { userId_postId: data },
             data: { ammount: { increment: ammount } },
           });
+          if (!autoRelly) {
+            await ctx.prisma.user.update({
+              where: {
+                id: authorId,
+              },
+              data: {
+                relliesAmmount: {
+                  increment: Math.round(ammount * 0.8),
+                },
+              },
+            });
+          }
         } catch {
           throw new TRPCError({
             code: "INTERNAL_SERVER_ERROR",

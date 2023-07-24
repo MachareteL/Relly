@@ -6,6 +6,7 @@ import { LifebuoyIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import avif from "public/docs-dark@30.1a9f8cbf.avif";
 import type { NextPage } from "next";
+import TrendingPostsList from "~/components/TrendingPostsList";
 
 const Home: NextPage = ({}) => {
   const { status } = useSession({
@@ -17,7 +18,7 @@ const Home: NextPage = ({}) => {
     onSuccess: () => {
       setContent("");
       ctx.post.invalidate();
-      ctx.user.invalidate()
+      ctx.user.invalidate();
     },
   });
   const user = api.user.getUser.useQuery();
@@ -67,9 +68,8 @@ const Home: NextPage = ({}) => {
       <div className="absolute -top-10 right-0 -z-20 w-3/4">
         <Image src={avif} alt="backgroundElement" />
       </div>
-      <div className="container m-auto min-h-screen gap-2 p-4 sm:grid sm:grid-cols-12">
-        <div className="col-span-2 hidden bg-slate-500 sm:block"></div>
-        <div className="sm:col-span-7">
+      <div className="lg:container lg:m-auto min-h-screen gap-2 p-4 md:grid md:grid-cols-12">
+        <div className="md:col-span-7">
           <div className="mb-4 rounded-lg border border-white border-opacity-30 bg-white bg-opacity-20 p-4">
             <form onSubmit={handleSubmit} className="flex flex-col gap-4 pb-2">
               <textarea
@@ -94,15 +94,19 @@ const Home: NextPage = ({}) => {
               </button>
             </form>
           </div>
+          {/* trending */}
           <RecentPosts />
         </div>
-        <div className="-z-20 hidden sm:col-span-3 sm:block">
+        <div className=" hidden md:col-span-5 md:block md:space-y-2">
           <div className="rounded-lg border border-white border-opacity-30 bg-white bg-opacity-20 p-4 backdrop-blur-xl">
             <h1 className="text-3xl font-bold">Balance</h1>
             <h1 className="flex items-center text-lg font-medium">
               <LifebuoyIcon className="h-6" />
               {user.data?.relliesAmmount} Rellies
             </h1>
+          </div>
+          <div className="h-full">
+            <RecentTopPosts />
           </div>
         </div>
       </div>
@@ -124,6 +128,26 @@ function RecentPosts() {
 
   return (
     <PostsList
+      posts={data?.pages.flatMap((page) => page.posts)}
+      isError={isError}
+      isLoading={isLoading}
+      hasMore={hasNextPage ?? false}
+      fetchNewPosts={fetchNextPage}
+    />
+  );
+}
+function RecentTopPosts() {
+  const { data, isError, isLoading, hasNextPage, fetchNextPage } =
+    api.post.getTrending.useInfiniteQuery(
+      {},
+      {
+        getNextPageParam: (lastPage) => lastPage.nextCursor,
+      }
+    );
+  // console.log(data?.pages[0]?.posts[0]?.likeCount);
+
+  return (
+    <TrendingPostsList
       posts={data?.pages.flatMap((page) => page.posts)}
       isError={isError}
       isLoading={isLoading}

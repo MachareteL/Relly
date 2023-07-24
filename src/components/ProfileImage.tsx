@@ -1,6 +1,6 @@
 export function ProfileImage({ src, className }: ProfileImageProps) {
   return (
-    <div className={`h-8 w-8 overflow-hidden rounded-full ${className}`}>
+    <div className={`overflow-hidden rounded-full ${className}`}>
       {src == null ? (
         <img src="https://via.placeholder.com/150" className="h-full w-full" />
       ) : (
