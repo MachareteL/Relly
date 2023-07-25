@@ -61,4 +61,61 @@ export const userRouter = createTRPCRouter({
         followedByCurrentUser: profile.followedBy.length > 0,
       };
     }),
+  toggleFollow: protectedProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+      })
+    )
+    .mutation(async ({ input: { userId }, ctx }) => {
+      const follow = await ctx.prisma.user.findFirst({
+        where: {
+          id: userId,
+          followedBy: { some: { followerId: ctx.session.user.id } },
+        },
+      });
+      if (follow == null) {
+        await ctx.prisma.follows.create({
+          data: {
+            followerId: ctx.session.user.id,
+            followingId: userId,
+          },
+        });
+        // await ctx.prisma.user.update({
+        //   where: { id: userId },
+        //   data: {
+        //     followedBy: {
+        //       connect: {
+        //         followerId_followingId: {
+        //           followerId: ctx.session.user.id,
+        //           followingId: userId,
+        //         },
+        //       },
+        //     },
+        //   },
+        // });
+      } else {
+        // await ctx.prisma.user.update({
+        //   where: { id: userId },
+        //   data: {
+        //     followedBy: {
+        //       disconnect: {
+        //         followerId_followingId: {
+        //           followerId: ctx.session.user.id,
+        //           followingId: userId,
+        //         },
+        //       },
+        //     },
+        //   },
+        // });
+        await ctx.prisma.follows.delete({
+          where: {
+            followerId_followingId: {
+              followerId: ctx.session.user.id,
+              followingId: userId,
+            },
+          },
+        });
+      }
+    }),
 });

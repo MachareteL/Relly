@@ -17,14 +17,14 @@ export const postRouter = createTRPCRouter({
       // const currentUserID = await ctx.session?.user.id;
       const posts = await ctx.prisma.post.findMany({
         take: 11,
-        // where: {
-        //   user: { followedBy: { some: { followerId: ctx.session.user.id } } },
-        //   OR: {
-        //     createdAt: {
-        //       gt: new Date(new Date().getTime() - 4000 * 60 * 60 * 1000),
-        //     },
-        //   },
-        // },
+        where: {
+          user: { followedBy: { some: { followerId: ctx.session.user.id } } },
+          OR: {
+            createdAt: {
+              gt: new Date(new Date().getTime() - 4000 * 60 * 60 * 1000),
+            },
+          },
+        },
         skip: 10 * cursor,
         orderBy: [{ createdAt: "desc" }],
         include: {
@@ -37,6 +37,24 @@ export const postRouter = createTRPCRouter({
             },
           },
         },
+      });
+
+      const teste = await ctx.prisma.user.findMany({
+        where: {
+          followedBy: {
+            some: {
+              followerId: ctx.session.user.id,
+            },
+          },
+        },
+        include:{
+          posts:{
+            take: 11,
+            skip: 10 * cursor,
+            orderBy: {createdAt: 'desc'}
+          },
+          rellies: true,
+        }
       });
 
       // const posts = await ctx.prisma.post.findMany({
@@ -66,7 +84,8 @@ export const postRouter = createTRPCRouter({
       //     },
       //   },
       // });
-
+      console.log(teste);
+      
       let nextCursor: typeof cursor | undefined;
       if (posts.length > 10) {
         const nextPost = posts.pop();
