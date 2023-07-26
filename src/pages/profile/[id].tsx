@@ -10,14 +10,13 @@ const Index: NextPage<Props> = ({ id }) => {
   console.log(id);
 
   const { data } = api.user.getProfile.useQuery({ id });
-  console.log(data);
-  
   const toggleFollow = api.user.toggleFollow.useMutation();
-  if (!data) {
-    return <> ERROR </>;
-  }
   function handleFollow() {
     toggleFollow.mutate({ userId: id });
+  }
+
+  if (!data) {
+    return <> ERROR </>;
   }
   return (
     <div className="container m-auto flex flex-col p-4">

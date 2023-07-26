@@ -1,6 +1,11 @@
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowLeftOnRectangleIcon,
+  Bars3Icon,
+  UserCircleIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
 import { usePathname } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 import { ProfileImage } from "./ProfileImage";
@@ -13,7 +18,6 @@ function classNames(...classes: string[]) {
 export default function Navbar() {
   const pathname = usePathname();
   const session = useSession();
-  // console.log(session);
   const navigation = [
     { name: "Feed", href: "#", current: pathname == "/" ? true : false },
     {
@@ -163,31 +167,19 @@ export default function Navbar() {
                       leaveFrom="transform opacity-100 scale-100"
                       leaveTo="transform opacity-0 scale-95"
                     >
-                      <Menu.Items className="absolute right-0 z-20 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                      <Menu.Items className="absolute right-0 z-50 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                         <Menu.Item>
                           {({ active }) => (
-                            <a
-                              href="#"
+                            <Link
+                              href={`/profile/${session.data?.user.id}`}
                               className={classNames(
                                 active ? "bg-gray-100" : "",
-                                "block px-4 py-2 text-sm text-gray-700"
+                                "flex w-full px-4 py-2 text-sm text-gray-700"
                               )}
                             >
+                              <UserCircleIcon className="h-5 pr-2" />
                               Your Profile
-                            </a>
-                          )}
-                        </Menu.Item>
-                        <Menu.Item>
-                          {({ active }) => (
-                            <a
-                              href="#"
-                              className={classNames(
-                                active ? "bg-gray-100" : "",
-                                "block px-4 py-2 text-sm text-gray-700"
-                              )}
-                            >
-                              Settings
-                            </a>
+                            </Link>
                           )}
                         </Menu.Item>
                         <Menu.Item>
@@ -196,9 +188,10 @@ export default function Navbar() {
                               onClick={() => signOut()}
                               className={classNames(
                                 active ? "bg-gray-100" : "",
-                                "block px-4 py-2 text-sm text-gray-700"
+                                "flex w-full px-4 py-2 text-sm text-gray-700"
                               )}
                             >
+                              <ArrowLeftOnRectangleIcon className="h-5 pr-2" />
                               Sign out
                             </button>
                           )}

@@ -97,7 +97,7 @@ const Home: NextPage = ({}) => {
           {/* trending */}
           <RecentPosts />
         </div>
-        <div className=" hidden md:col-span-4 md:block md:space-y-4">
+        <div className="hidden md:col-span-4 md:block md:space-y-4 -z-10">
           <div className="rounded-lg border border-white border-opacity-70 bg-white bg-opacity-20 p-4 backdrop-blur-xl">
             <h1 className="text-3xl font-bold">Balance</h1>
             <h1 className="flex items-center text-lg font-medium">

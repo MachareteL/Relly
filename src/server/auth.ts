@@ -5,6 +5,7 @@ import {
   type NextAuthOptions,
   type DefaultSession,
 } from "next-auth";
+import EmailProvider from "next-auth/providers/email";
 import GitHubProvider from "next-auth/providers/github";
 import { env } from "~/env.mjs";
 import { prisma } from "~/server/db";
@@ -51,7 +52,7 @@ export const authOptions: NextAuthOptions = {
     updateAge: 60 * 5, //60 * 5,
   },
   pages: {
-    signIn: "/signup",
+    // signIn: "/signup",
   },
   events: {
     async session({ session }) {
@@ -84,6 +85,10 @@ export const authOptions: NextAuthOptions = {
     GitHubProvider({
       clientId: env.GITHUB_CLIENT_ID,
       clientSecret: env.GITHUB_CLIENT_SECRET,
+    }),
+    EmailProvider({
+      server: process.env.EMAIL_SERVER,
+      from: process.env.EMAIL_FROM,
     }),
     /**
      * ...add more providers here.
