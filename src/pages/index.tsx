@@ -9,9 +9,11 @@ import type { NextPage } from "next";
 import TrendingPostsList from "~/components/TrendingPostsList";
 
 const Home: NextPage = ({}) => {
-  const { status } = useSession({
+  const { status, data } = useSession({
     required: true,
   });
+  console.log(data);
+  
   const [content, setContent] = useState("");
   const ctx = api.useContext();
   const newPost = api.post.create.useMutation({

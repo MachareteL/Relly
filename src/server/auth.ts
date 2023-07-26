@@ -52,7 +52,7 @@ export const authOptions: NextAuthOptions = {
     updateAge: 60 * 5, //60 * 5,
   },
   pages: {
-    // signIn: "/signup",
+    signIn: "/signup",
   },
   events: {
     async session({ session }) {
