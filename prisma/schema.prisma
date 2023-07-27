@@ -73,14 +73,15 @@ model User {
     email         String?   @unique
     emailVerified DateTime?
     image         String?
+    coverPhoto    String?
     accounts      Account[]
     sessions      Session[]
 
-    posts      Post[]
-    followedBy Follows[] @relation("following")
-    following  Follows[] @relation("follower")
-    rellies    Rellies[]
-    relliesAmmount Int @default(0)
+    posts          Post[]
+    followedBy     Follows[] @relation("following")
+    following      Follows[] @relation("follower")
+    rellies        Rellies[]
+    relliesAmmount Int       @default(0)
 }
 
 model Follows {

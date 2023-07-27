@@ -2,8 +2,11 @@ import Image from "next/image";
 import bkg from "public/hero-illustration.svg";
 import Link from "next/link";
 import LoginForm from "~/components/LoginForm";
+import { NextPage } from "next";
 
-export default function Signup() {
+interface Props {}
+
+const Index: NextPage<Props> = ({}) => {
   return (
     <div className="h-screen">
       <span className="absolute right-0 top-0 -z-30 h-screen w-full overflow-x-hidden">
@@ -111,4 +114,5 @@ export default function Signup() {
       <span className="absolute bottom-0 -z-30 hidden h-1/3 w-full bg-gradient-to-t from-slate-700 sm:block"></span>
     </div>
   );
-}
+};
+export default Index;

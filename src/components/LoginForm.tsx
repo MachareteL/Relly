@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { signIn } from "next-auth/react";
 
 export default function LoginForm() {
+  const [email, setEmail] = useState("");
   return (
     <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -12,9 +13,38 @@ export default function LoginForm() {
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <div>
+          {/* <form
+            method="post"
+            action="/api/auth/signin/email"
+            onSubmit={(e) => {
+              e.preventDefault();
+              signIn("email", {
+                email: document.getElementById("email").value,
+              });
+            }}
+          >
+            <label>
+              Email address
+              <input type="text" id="email" name="email" />
+            </label>
+          </form> */}
+          <input
+            type="text"
+            onChange={(e) => {
+              setEmail(e.target.value);
+            }}
+            value={email}
+            className="text-black"
+          />
           <button
-            onClick={() => signIn("email")}
-            className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            onClick={() =>
+              signIn("email", {
+                email: email,
+                callbackUrl: "http://localhost:3000/profile/newemailuser",
+              })
+            }
+            className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm
+            hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
             Sign in w/ Email
           </button>
