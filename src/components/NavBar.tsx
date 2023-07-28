@@ -20,11 +20,11 @@ export default function Navbar() {
   const pathname = usePathname();
   const session = useSession();
   const navigation = [
-    { name: "Feed", href: "#", current: pathname == "/" ? true : false },
+    { name: "Feed", href: "/", current: pathname == "/" ? true : false },
     {
-      name: "Relly",
-      href: "#",
-      current: pathname == "/currency" ? true : false,
+      name: "About",
+      href: "/about",
+      current: pathname == "/about" ? true : false,
     },
   ];
 
