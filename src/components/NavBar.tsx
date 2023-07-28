@@ -23,7 +23,7 @@ export default function Navbar() {
     },
   ];
 
-  // if (pathname == "/signup") return null;
+  if (pathname == "/signup") return null;
   return (
     <div>
       <Disclosure as="nav" className="mb-2 backdrop-blur-sm">

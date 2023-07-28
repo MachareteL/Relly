@@ -30,6 +30,10 @@ body {
     rgb(var(--background-start-rgb));
 }
 
+html{
+  scroll-behavior: smooth;
+}
+
 .bubbly-button {
   display: inline-block;
   -webkit-appearance: none;

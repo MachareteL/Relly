@@ -5,7 +5,6 @@ import Link from "next/link";
 import LoginForm from "~/components/LoginForm";
 import type { NextPage } from "next";
 
-
 const Index: NextPage = ({}) => {
   return (
     <div className="h-screen">
@@ -93,23 +92,18 @@ const Index: NextPage = ({}) => {
 
         <div className="block pb-16 sm:hidden">
           <div className="rounded-md bg-slate-500 py-3 text-center font-sans font-bold uppercase text-white">
-            <Link
-              href={"/"}
+            <a
+              href="#login"
               className="font-sans font-bold uppercase text-white"
             >
               Inscreva-se
-            </Link>
+            </a>
           </div>
-          <p className="py-2 text-end">
-            Já tem uma conta?{" "}
-            <Link
-              href={"/"}
-              className="font-semibold text-purple-600 underline decoration-slate-100 underline-offset-2"
-            >
-              Faça Login
-            </Link>
-          </p>
         </div>
+      </div>
+
+      <div id="login" className="h-screen sm:hidden">
+        <LoginForm />
       </div>
       <span className="absolute bottom-0 -z-30 hidden h-1/3 w-full bg-gradient-to-t from-slate-700 sm:block"></span>
     </div>
