@@ -23,7 +23,7 @@ export default function Navbar() {
     },
   ];
 
-  if (pathname == "/signup") return null;
+  // if (pathname == "/signup") return null;
   return (
     <div>
       <Disclosure as="nav" className="mb-2 backdrop-blur-sm">
@@ -133,10 +133,7 @@ export default function Navbar() {
                             item.current
                               ? "text-white after:scale-x-100"
                               : "text-gray-300 hover:text-white"
-                          }
-                            relative hover:after:scale-x-100" rounded-md px-4 py-3 text-sm font-medium after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-white after:transition-transform after:duration-200 after:ease-out hover:after:origin-bottom-left
-                          `}
-                          aria-current={item.current ? "page" : undefined}
+                          } hover:after:scale-x-100 relative rounded-md px-4 py-3 text-sm font-medium after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-white after:transition-transform after:duration-200 after:ease-out hover:after:origin-bottom-left`}
                         >
                           {item.name}
                         </Link>
@@ -168,7 +165,9 @@ export default function Navbar() {
                         <Menu.Item>
                           {({ active }) => (
                             <Link
-                              href={`/profile/${session.data?.user.id?? "404"}`}
+                              href={`/profile/${
+                                session.data?.user.id ?? "404"
+                              }`}
                               className={`
                                 ${active ? "bg-gray-100" : ""}
                                 "flex text-gray-700" w-full px-4 py-2 text-sm
