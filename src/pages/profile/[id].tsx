@@ -1,4 +1,4 @@
-import { NextPage, GetServerSidePropsContext } from "next";
+import type { NextPage, GetServerSidePropsContext } from "next";
 import { useSession } from "next-auth/react";
 import PostsList from "~/components/PostsList";
 import { ProfileImage } from "~/components/ProfileImage";
@@ -33,7 +33,7 @@ const Index: NextPage<Props> = ({ id }) => {
       />
       <div className="flex items-center space-x-2 bg-gradient-to-r from-[rgba(0,0,0,0.2)] to-[rgba(255,255,255,0.2)] px-4 py-4 rounded-b-md">
         <ProfileImage
-          src={data.picture!}
+          src={data.picture}
           className="h-16 w-16 sm:h-32 sm:w-32"
         />
         <div>
@@ -98,7 +98,7 @@ export const getServerSideProps = async (
     return;
   }
   const ssg = ssgHelper();
-  ssg.user.getProfile.prefetch({ id });
+  await ssg.user.getProfile.prefetch({ id });
   return {
     props: { id },
   };

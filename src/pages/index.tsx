@@ -1,6 +1,6 @@
 import { useSession } from "next-auth/react";
 import { api } from "~/utils/api";
-import { FormEvent, useState } from "react";
+import { type FormEvent, useState } from "react";
 import PostsList from "~/components/PostsList";
 import { LifebuoyIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
@@ -9,7 +9,7 @@ import type { NextPage } from "next";
 import TrendingPostsList from "~/components/TrendingPostsList";
 
 const Home: NextPage = ({}) => {
-  const { status, data } = useSession({
+  const { data } = useSession({
     required: true,
   });
   console.log(data);
@@ -17,10 +17,10 @@ const Home: NextPage = ({}) => {
   const [content, setContent] = useState("");
   const ctx = api.useContext();
   const newPost = api.post.create.useMutation({
-    onSuccess: () => {
+    onSuccess: async () => {
       setContent("");
-      ctx.post.invalidate();
-      ctx.user.invalidate();
+      await ctx.post.invalidate();
+      await ctx.user.invalidate();
     },
   });
   const user = api.user.getUser.useQuery();

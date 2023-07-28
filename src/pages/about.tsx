@@ -1,4 +1,4 @@
-import { NextPage } from "next";
+import type { NextPage } from "next";
 import {
   ComputerDesktopIcon,
   PaintBrushIcon,
@@ -7,7 +7,6 @@ import {
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 
-interface Props {}
 
 const features = [
   {
@@ -36,7 +35,7 @@ const features = [
   },
 ];
 
-const About: NextPage<Props> = ({}) => {
+const About: NextPage = ({}) => {
   return (
     <div className="py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -55,9 +54,9 @@ const About: NextPage<Props> = ({}) => {
             develop typescript and TRPc habilites
           </p>
           <p className="mt-6 text-lg leading-8 text-gray-500">
-            I'm Lucas, 20yo, and I study development. Relly is a social media
+            I&apos;m Lucas, 20yo, and I study development. Relly is a social media
             where you spend or earn <i className="text-gray-400">Rellys</i> w/
-            the interaction of other people's posts.
+            the interaction of other people&apos;s posts.
           </p>
         </div>
         <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-4xl">

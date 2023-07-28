@@ -43,7 +43,7 @@ export default function PostModel({
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.3 }}
     >
-      <li className={`flex gap-4 overflow-hidden rounded-lg bg-[rgba(100,116,139,0.5)] px-4 pb-2 pt-4 backdrop-blur-3xl ${className}`}>
+      <li className={`flex gap-4 overflow-hidden rounded-lg bg-[rgba(100,116,139,0.5)] px-4 pb-2 pt-4 backdrop-blur-3xl ${className?? ""}`}>
         <Link href={`/profile/${user.id}`} className="h-fit">
           <ProfileImage src={user.image} className="h-8 w-8"/>
         </Link>

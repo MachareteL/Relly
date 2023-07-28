@@ -29,7 +29,7 @@ export default function LoginForm() {
             </label>
           </form> */}
           <label htmlFor="email" className="text-sm font-thin">
-            Insert your e-mail & we'll send you a link to SignIn
+            Insert your e-mail & we&apos;ll send you a link to SignIn
           </label>
           <input
             type="text"
@@ -42,12 +42,12 @@ export default function LoginForm() {
             className="mb-4 w-full rounded-md p-1 text-black"
           />
           <button
-            onClick={() =>
-              signIn("email", {
+            onClick={() => {
+              void signIn("email", {
                 email: email,
                 callbackUrl: "http://localhost:3000/profile/newemailuser",
-              })
-            }
+              });
+            }}
             className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm
             hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
@@ -56,9 +56,9 @@ export default function LoginForm() {
         </div>
         <div className="mt-10 flex w-full justify-around">
           <button
-            onClick={() =>
-              signIn("github", { callbackUrl: "http://localhost:3000/" })
-            }
+            onClick={() => {
+              void signIn("github", { callbackUrl: "http://localhost:3000/" });
+            }}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -71,9 +71,9 @@ export default function LoginForm() {
             </svg>
           </button>
           <button
-            onClick={() =>
-              signIn("google", { callbackUrl: 'http://localhost:3000/' })
-            }
+            onClick={() => {
+              void signIn("google", { callbackUrl: "http://localhost:3000/" });
+            }}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

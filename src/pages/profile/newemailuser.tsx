@@ -1,11 +1,10 @@
-import { NextPage } from "next";
+import type { NextPage } from "next";
 import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 import { api } from "~/utils/api";
-import { type ChangeEvent, useState, useEffect } from "react";
-interface Props {}
+import { type ChangeEvent, useState } from "react";
 
-const Settings: NextPage<Props> = ({}) => {
-  const { data: user } = api.user.getUser.useQuery();
+const Settings: NextPage = ({}) => {
+  // const { data: user } = api.user.getUser.useQuery();
   const updateProfile = api.user.updateProfile.useMutation();
   const [userProfile, setUserProfile] = useState<{
     name: string;
@@ -84,7 +83,7 @@ const Settings: NextPage<Props> = ({}) => {
               onChange={(e) => handleFileInput(e)}
             />
             {userProfile.image ? (
-              <img src={userProfile.image} className="relative h-12 w-12 rounded-full" />
+              <img src={userProfile.image} className="relative h-12 w-12 rounded-full" alt=""/>
             ) : (
               <UserCircleIcon
                 className="relative h-12 w-12 text-gray-300"

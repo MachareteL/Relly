@@ -8,7 +8,8 @@ export default function RellyButton({
   author
 }: RellyButtonProps) {
   const [shouldBeAnimated, setShouldBeAnimated] = useState(false);
-  var animate = async function (e: SyntheticEvent<HTMLButtonElement>) {
+  const animate = function (e: SyntheticEvent<HTMLButtonElement>) {
+    e.preventDefault()
     setShouldBeAnimated(true);
     setTimeout(() => {
       setShouldBeAnimated(false);
@@ -18,7 +19,7 @@ export default function RellyButton({
 
   return (
     <button
-      onClick={animate}
+      onClick={void animate}
       className={`bubbly-button justify-self-end ${
         shouldBeAnimated ? "animate" : ""
       } ${className}`}

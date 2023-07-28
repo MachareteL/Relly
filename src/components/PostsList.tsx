@@ -10,10 +10,10 @@ export default function PostsList({
   fetchNewPosts,
   hasMore,
 }: PostsListProps) {
+  const { data } = useSession();
   if (isLoading) return <>Loading...</>;
   if (isError) return <>Sorry! An error occured...</>;
   if (posts == null || posts.length == 0) return <>No posts yet, say hi!</>;
-  const { data } = useSession();
   return (
     <ul>
       <InfiniteScroll

@@ -1,12 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import Image from "next/image";
 import bkg from "public/hero-illustration.svg";
 import Link from "next/link";
 import LoginForm from "~/components/LoginForm";
-import { NextPage } from "next";
+import type { NextPage } from "next";
 
-interface Props {}
 
-const Index: NextPage<Props> = ({}) => {
+const Index: NextPage = ({}) => {
   return (
     <div className="h-screen">
       <span className="absolute right-0 top-0 -z-30 h-screen w-full overflow-x-hidden">
