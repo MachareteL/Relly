@@ -136,9 +136,9 @@ export default function Navbar() {
                           href={item.href}
                           className={classNames(
                             item.current
-                              ? "relative text-white  after:h-[2px]"
-                              : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                            "rounded-md px-4 py-3 text-sm font-medium after:absolute after:bottom-0 after:left-0 after:w-full after:bg-white"
+                              ? "text-white after:scale-x-100"
+                              : "text-gray-300 hover:text-white",
+                            "relative rounded-md px-4 py-3 text-sm font-medium after:duration-200 after:ease-out after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-white after:transition-transform hover:after:origin-bottom-left hover:after:scale-x-100"
                           )}
                           aria-current={item.current ? "page" : undefined}
                         >
