@@ -3,6 +3,7 @@ import { Disclosure, Menu, Transition } from "@headlessui/react";
 import {
   ArrowLeftOnRectangleIcon,
   Bars3Icon,
+  Cog8ToothIcon,
   UserCircleIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
@@ -178,20 +179,17 @@ export default function Navbar() {
                             </Link>
                           )}
                         </Menu.Item>
-                        {/* <Menu.Item>
+                        <Menu.Item>
                           {({ active }) => (
                             <Link
                               href="/profile/settings"
-                              className={classNames(
-                                active ? "bg-gray-100" : "",
-                                "flex w-full px-4 py-2 text-sm text-gray-700"
-                              )}
+                              className={`${active ? "bg-gray-100" : ""} flex w-full px-4 py-2 text-sm text-gray-700`}
                             >
                               <Cog8ToothIcon className="h-5 pr-2" />
                               Settings
                             </Link>
                           )}
-                        </Menu.Item> */}
+                        </Menu.Item>
                         <Menu.Item>
                           {({ active }) => (
                             <button
@@ -221,7 +219,11 @@ export default function Navbar() {
                     as="a"
                     href={item.href}
                     className={`
-                      ${item.current ? "bg-gray-900 text-white" : "text-gray-300 hover:bg-gray-700 hover:text-white"} block rounded-md px-3 py-2 text-base font-medium`}
+                      ${
+                        item.current
+                          ? "bg-gray-900 text-white"
+                          : "text-gray-300 hover:bg-gray-700 hover:text-white"
+                      } block rounded-md px-3 py-2 text-base font-medium`}
                     aria-current={item.current ? "page" : undefined}
                   >
                     {item.name}
