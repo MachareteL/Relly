@@ -19,7 +19,7 @@ export default function RellyButton({
 
   return (
     <button
-      onClick={void animate}
+      onClick={(e) => {void animate(e)}}
       className={`bubbly-button justify-self-end ${
         shouldBeAnimated ? "animate" : ""
       } ${className}`}
