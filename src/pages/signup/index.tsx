@@ -96,7 +96,7 @@ const Index: NextPage = ({}) => {
               href="#login"
               className="font-sans font-bold uppercase text-white"
             >
-              Inscreva-se
+              Log-in
             </a>
           </div>
         </div>
