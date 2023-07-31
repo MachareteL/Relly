@@ -15,14 +15,10 @@ const Home: NextPage = ({}) => {
   });
   console.log(data);
 
-  let [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(true);
 
   function closeModal() {
     setIsOpen(false);
-  }
-
-  function openModal() {
-    setIsOpen(true);
   }
 
   const [content, setContent] = useState("");
@@ -165,7 +161,7 @@ const Home: NextPage = ({}) => {
                     </Dialog.Title>
                     <div className="mt-2">
                       <p className="text-sm text-gray-500">
-                        To interact with others people's posts you will need
+                        To interact with others people&lsquo;s posts you will need
                         rellys. <br />
                         You will earn rellys every 5 minutes and everytime
                         someone else relly to your post or follow you. <br />
