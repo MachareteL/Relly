@@ -45,7 +45,7 @@ export default function LoginForm() {
             onClick={() => {
               void signIn("email", {
                 email: email,
-                callbackUrl: "http://localhost:3000/profile/newemailuser",
+                callbackUrl: "http://relly.vercel.app/profile/newemailuser",
               });
             }}
             className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm

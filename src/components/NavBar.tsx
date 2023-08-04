@@ -3,6 +3,7 @@ import { Disclosure, Menu, Transition } from "@headlessui/react";
 import {
   ArrowLeftOnRectangleIcon,
   Bars3Icon,
+  Cog8ToothIcon,
   UserCircleIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
@@ -133,10 +134,7 @@ export default function Navbar() {
                             item.current
                               ? "text-white after:scale-x-100"
                               : "text-gray-300 hover:text-white"
-                          }
-                            "relative hover:after:scale-x-100" rounded-md px-4 py-3 text-sm font-medium after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-white after:transition-transform after:duration-200 after:ease-out hover:after:origin-bottom-left
-                          `}
-                          aria-current={item.current ? "page" : undefined}
+                          } relative rounded-md px-4 py-3 text-sm font-medium after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-white after:transition-transform after:duration-200 after:ease-out hover:after:origin-bottom-left hover:after:scale-x-100`}
                         >
                           {item.name}
                         </Link>
@@ -168,10 +166,12 @@ export default function Navbar() {
                         <Menu.Item>
                           {({ active }) => (
                             <Link
-                              href={`/profile/${session.data?.user.id?? "404"}`}
+                              href={`/profile/${
+                                session.data?.user.id ?? "404"
+                              }`}
                               className={`
                                 ${active ? "bg-gray-100" : ""}
-                                "flex text-gray-700" w-full px-4 py-2 text-sm
+                                flex w-full px-4 py-2 text-sm text-gray-700
                               `}
                             >
                               <UserCircleIcon className="h-5 pr-2" />
@@ -179,27 +179,24 @@ export default function Navbar() {
                             </Link>
                           )}
                         </Menu.Item>
-                        {/* <Menu.Item>
+                        <Menu.Item>
                           {({ active }) => (
                             <Link
-                              href="/profile/settings"
-                              className={classNames(
-                                active ? "bg-gray-100" : "",
-                                "flex w-full px-4 py-2 text-sm text-gray-700"
-                              )}
+                              href="/profile/newemailuser"
+                              className={`${active ? "bg-gray-100" : ""} flex w-full px-4 py-2 text-sm text-gray-700`}
                             >
                               <Cog8ToothIcon className="h-5 pr-2" />
                               Settings
                             </Link>
                           )}
-                        </Menu.Item> */}
+                        </Menu.Item>
                         <Menu.Item>
                           {({ active }) => (
                             <button
                               onClick={() => void signOut()}
                               className={`
                                 ${active ? "bg-gray-100" : ""}
-                                "flex text-gray-700" w-full px-4 py-2 text-sm
+                                flex w-full px-4 py-2 text-sm text-gray-700
                               `}
                             >
                               <ArrowLeftOnRectangleIcon className="h-5 pr-2" />
@@ -226,9 +223,7 @@ export default function Navbar() {
                         item.current
                           ? "bg-gray-900 text-white"
                           : "text-gray-300 hover:bg-gray-700 hover:text-white"
-                      }
-                      "block font-medium" rounded-md px-3 py-2 text-base
-                    `}
+                      } block rounded-md px-3 py-2 text-base font-medium`}
                     aria-current={item.current ? "page" : undefined}
                   >
                     {item.name}
