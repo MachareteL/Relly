@@ -57,7 +57,7 @@ export default function LoginForm() {
         <div className="mt-10 flex w-full justify-around">
           <button
             onClick={() => {
-              void signIn("github", { callbackUrl: "http://localhost:3000/" });
+              void signIn("github", { callbackUrl: "https://relly.vercel.app/" });
             }}
           >
             <svg
@@ -72,7 +72,7 @@ export default function LoginForm() {
           </button>
           <button
             onClick={() => {
-              void signIn("google", { callbackUrl: "http://localhost:3000/" });
+              void signIn("google", { callbackUrl: "https://relly.vercel.app/" });
             }}
           >
             <svg
